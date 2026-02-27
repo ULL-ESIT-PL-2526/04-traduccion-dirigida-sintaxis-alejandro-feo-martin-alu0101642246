@@ -1,6 +1,7 @@
 /* Lexer */
 %lex
 %%
+\/\/.*		      { /* skip comentarios una linea */; }
 \s+                   { /* skip whitespace */; }
 [0-9]+                { return 'NUMBER';       }
 "**"                  { return 'OP';           }
