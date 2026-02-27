@@ -13,6 +13,20 @@ describe('Parser Tests', () => {
     });
   });
 
+  describe('Flotantes y comentarios una linea', () => {
+  test('should parse float numbers and comments', () => {
+    expect(parse("2.35e-3")).toBe(0.00235);
+    expect(parse("2.35e+3")).toBe(2350);
+    expect(parse("2.35E-3")).toBe(0.00235);
+    expect(parse("2.35")).toBe(2.35);
+    expect(parse("23")).toBe(23);
+    expect(parse("// Hola \n 23")).toBe(23);
+  });
+  
+
+});
+
+
   describe('Basic arithmetic operations', () => {
     test('should handle addition', () => {
       expect(parse("3 + 5")).toBe(8);
@@ -110,7 +124,6 @@ describe('Parser Tests', () => {
       expect(() => parse("3 +")).toThrow();
       expect(() => parse("+ 3")).toThrow();
       expect(() => parse("3 + + 4")).toThrow();
-      expect(() => parse("3.5")).toThrow(); // Only integers are supported
     });
 
     test('should handle incomplete expressions', () => {
