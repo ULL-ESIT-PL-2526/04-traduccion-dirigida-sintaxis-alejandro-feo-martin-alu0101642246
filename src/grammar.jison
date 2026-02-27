@@ -1,13 +1,13 @@
 /* Lexer */
 %lex
 %%
-\/\/.*		      { /* skip comentarios una linea */; }
-\s+                   { /* skip whitespace */; }
-[0-9]+                { return 'NUMBER';       }
-"**"                  { return 'OP';           }
-[-+*/]                { return 'OP';           }
-<<EOF>>               { return 'EOF';          }
-.                     { return 'INVALID';      }
+\/\/.*						   { /* skip comentarios una linea */; }
+\s+                                                { /* skip whitespace */; }
+[0-9]+(\.[0-9]+)?([eE][+-]?[0-9]+)?                { /* punto flotante */       return 'NUMBER';       }
+"**"                                               { return 'OP';           }
+[-+*/]                                             { return 'OP';           }
+<<EOF>>                                            { return 'EOF';          }
+.                                                  { return 'INVALID';      }
 /lex
 
 /* Parser */
