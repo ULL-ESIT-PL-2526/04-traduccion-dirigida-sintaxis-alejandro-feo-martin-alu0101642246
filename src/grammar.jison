@@ -1,7 +1,7 @@
 /* Lexer */
 %lex
 %%
-\/\/.*						   { /* skip comentarios una linea */; }
+\/\/.*						                       { /* skip comentarios una linea */; }
 \s+                                                { /* skip whitespace */; }
 [0-9]+(\.[0-9]+)?([eE][+-]?[0-9]+)?                { /* punto flotante */       return 'NUMBER';       }
 "**"                                               { return 'OP';           }
