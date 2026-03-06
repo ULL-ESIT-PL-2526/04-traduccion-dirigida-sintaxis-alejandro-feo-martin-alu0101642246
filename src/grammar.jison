@@ -4,8 +4,9 @@
 \/\/.*						                       { /* skip comentarios una linea */; }
 \s+                                                { /* skip whitespace */; }
 [0-9]+(\.[0-9]+)?([eE][+-]?[0-9]+)?                { /* punto flotante */       return 'NUMBER';       }
-"**"                                               { return 'OP';           }
-[-+*/]                                             { return 'OP';           }
+"**"                                               { return 'opow';           }
+[-+]                                             { return 'opad';           }
+[*/]							{ return 'opmu'; }
 <<EOF>>                                            { return 'EOF';          }
 .                                                  { return 'INVALID';      }
 /lex
@@ -16,18 +17,32 @@
 %%
 
 expressions
-    : expression EOF
-        { return $expression; }
+    : e EOF
+        { return $e; }
     ;
 
-expression
-    : expression OP term
-        { $$ = operate($OP, $expression, $term); }
-    | term
-        { $$ = $term; }
+e
+    : e opad t
+        { $$ = operate($opad, $e, $t); }
+    | t
+        { $$ = $t; }
     ;
 
-term
+t
+    : t opmu r   
+        { $$ = operate($opmu, $t, $r); }
+    | r   
+        { $$ = $r; }
+    ;
+
+r
+    : f opow r   
+        { $$ = operate($opow, $f, $r); }
+    | f   
+        { $$ = $f; }
+    ;
+
+f
     : NUMBER
         { $$ = Number(yytext); }
     ;

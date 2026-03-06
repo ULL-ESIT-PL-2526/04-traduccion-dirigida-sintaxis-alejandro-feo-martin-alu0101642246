@@ -1,3 +1,6 @@
+const parse = require("../src/parser.js").parse;
+
+
 describe('Parser Failing Tests', () => {
 test('should handle multiplication and division before addition and subtraction', () => {
 expect(parse("2 + 3 * 4")).toBe(14); // 2 + (3 * 4) = 14
@@ -10,8 +13,6 @@ expect(parse("2 + 3 ** 2")).toBe(11); // 2 + (3 ** 2) = 11
 expect(parse("2 * 3 ** 2")).toBe(18); // 2 * (3 ** 2) = 18
 expect(parse("10 - 2 ** 3")).toBe(2); // 10 - (2 ** 3) = 2
 });
-1https://classroom.github.com/a/ni4JtMCB
-1
 test('should handle right associativity for exponentiation', () => {
 expect(parse("2 ** 3 ** 2")).toBe(512); // 2 ** (3 ** 2) = 2 ** 9 = 512
 expect(parse("3 ** 2 ** 2")).toBe(81); // 3 ** (2 ** 2) = 3 ** 4 = 81
