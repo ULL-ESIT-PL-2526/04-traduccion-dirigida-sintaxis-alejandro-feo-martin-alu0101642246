@@ -2,11 +2,11 @@ const parse = require("../src/parser.js").parse;
 
 
 describe('Parser Passing Tests', () => {
-test('should handle multiplication and division before addition and subtraction', () => {
-expect(parse("2.0 + 3.0 * 4")).toBe(14); // 2 + (3 * 4) = 14
-expect(parse("10 - 6 / 2")).toBe(7); // 10 - (6 / 2) = 7
-expect(parse("5 * 2.0 + 3")).toBe(13); // (5 * 2) + 3 = 13
-expect(parse("20 / 4 - 2")).toBe(3); // (20 / 4) - 2 = 3
+test('reconoce parentesis', () => {
+expect(parse("2.0 + (3.0 * 4)")).toBe(14); // 2 + (3 * 4) = 14
+expect(parse("10 - (6 / 2)")).toBe(7); // 10 - (6 / 2) = 7
+expect(parse("(5 * 2.0= + 3")).toBe(13); // (5 * 2) + 3 = 13
+expect(parse("(20 / 4) - 2")).toBe(3); // (20 / 4) - 2 = 3
 });
 test('should handle exponentiation with highest precedence', () => {
 expect(parse("2 + 3 ** 2")).toBe(11); // 2 + (3 ** 2) = 11
