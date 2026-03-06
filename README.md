@@ -74,7 +74,7 @@ function operate(op, left, right) {
 
 
 # Práctica 5: Traducción dirigida por la sintaxis: gramática
-
+```
 4.0-2.0*3.0
 2**3**2
 7-4/2
@@ -92,7 +92,7 @@ El árbol para todos es común, solo cambia OP1 y OP2, donde OP1 es el primero q
   
 Como podemos ver, no respeta el orden de predecencia, porque opera de izquierda a derecha independientemente del operando.
 
-
+```
 ## 1.4 Tests fallan:
 ```
  PASS  __tests__/parser.test.js
@@ -104,7 +104,7 @@ Time:        0.664 s, estimated 1 s
 Ran all test suites.
 ```
 
-# 2 Gramatica modificada:
+## 2 Gramatica modificada:
 
 ```
 /* Lexer */
