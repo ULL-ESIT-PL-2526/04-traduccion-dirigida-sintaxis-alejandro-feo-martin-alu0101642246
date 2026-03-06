@@ -1,31 +1,75 @@
-# Syntax Directed Translation with Jison
+# Practica 4: Traducción dirigida por sintaxis
 
-Jison is a tool that receives as input a Syntax Directed Translation and produces as output a JavaScript parser  that executes
-the semantic actions in a bottom up ortraversing of the parse tree.
- 
+# Ejercicio 3:
 
-## Compile the grammar to a parser
+1. Para que siga analizando y no devuelva nada al encontrar el espacio.
+2. NUMBER OP NUMBER OP INVALID
+3. Para que no se confunda con el operador *, que tiene un solo caracter.
+4. Cuando hay un EOF
+5. Para cualquier otro número
 
-See file [grammar.jison](./src/grammar.jison) for the grammar specification. To compile it to a parser, run the following command in the terminal:
-``` 
-➜  jison git:(main) ✗ npx jison grammar.jison -o parser.js
+
+## Nuevo código
 ```
+/* Lexer */
+%lex
+%%
+\/\/.*						   { /* skip comentarios una linea */; }
+\s+                                                { /* skip whitespace */; }
+[0-9]+(\.[0-9]+)?([eE][+-]?[0-9]+)?                { /* punto flotante */       return 'NUMBER';       }
+"**"                                               { return 'OP';           }
+[-+*/]                                             { return 'OP';           }
+<<EOF>>                                            { return 'EOF';          }
+.                                                  { return 'INVALID';      }
+/lex
 
-## Use the parser
+/* Parser */
+%start expressions
+%token NUMBER
+%%
 
-After compiling the grammar to a parser, you can use it in your JavaScript code. For example, you can run the following code in a Node.js environment:
+expressions
+    : expression EOF
+        { return $expression; }
+    ;
 
-```
-➜  jison git:(main) ✗ node                                
-Welcome to Node.js v25.6.0.
-Type ".help" for more information.
-> p = require("./parser.js")
-{
-  parser: { yy: {} },
-  Parser: [Function: Parser],
-  parse: [Function (anonymous)],
-  main: [Function: commonjsMain]
+expression
+    : expression OP term
+        { $$ = operate($OP, $expression, $term); }
+    | term
+        { $$ = $term; }
+    ;
+
+term
+    : NUMBER
+        { $$ = Number(yytext); }
+    ;
+%%
+
+function operate(op, left, right) {
+    switch (op) {
+        case '+': return left + right;
+        case '-': return left - right;
+        case '*': return left * right;
+        case '/': return left / right;
+        case '**': return Math.pow(left, right);
+    }
 }
-> p.parse("2*3")
-6
 ```
+
+
+## Nuevas pruebas:
+```
+  describe('Flotantes y comentarios una linea', () => {
+  test('should parse float numbers and comments', () => {
+    expect(parse("2.35e-3")).toBe(0.00235);
+    expect(parse("2.35e+3")).toBe(2350);
+    expect(parse("2.35E-3")).toBe(0.00235);
+    expect(parse("2.35")).toBe(2.35);
+    expect(parse("23")).toBe(23);
+    expect(parse("// Hola \n 23")).toBe(23);
+  });
+
+```
+
+
