@@ -8,6 +8,8 @@
 [-+]                                             { return 'opad';           }
 [*/]							{ return 'opmu'; }
 <<EOF>>                                            { return 'EOF';          }
+"("                                               { return 'open';           }
+")"                                               { return 'close';           }
 .                                                  { return 'INVALID';      }
 /lex
 
@@ -26,6 +28,9 @@ e
         { $$ = operate($opad, $e, $t); }
     | t
         { $$ = $t; }
+
+    | open e close
+	{ $$ = $e;  }
     ;
 
 t
